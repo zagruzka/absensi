@@ -4,10 +4,15 @@ import {useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import query from '@/db/query'
+import { Dialog } from '@headlessui/react'
+import { RadioGroup } from '@headlessui/react'
 
 const Absensi = () => {
 const [date, setDate] = useState(new Date())
 const [mumi, setMumi] = useState([])
+const [gender, setGender] = useState(null)
+
+const [dialog, setDialog] = useState(false)
 
 useEffect(() => {
   query('SELECT * FROM mumi')
@@ -52,6 +57,39 @@ useEffect(() => {
         }
       </tbody>
     </table>
+    <button className='bg-slate-700 p-2 mt-2 ms-auto' onClick={() => setDialog(true)}>Tambah</button>
+    <Dialog open={dialog} onClose={() => setDialog(false)} className='absolute z-50 w-full h-2/3 flex justify-center items-center bg-black bg-opacity-50 backdrop-blur'>
+      <Dialog.Panel className='max-w-96 bg-slate-700 rounded-xl p-4'>
+        <div className='text-center font-bold'>Tambah muda mudi</div>
+        <div>
+          <div>Nama</div>
+          <input placeholder='nama' />
+          <div>Gender</div>
+          <RadioGroup value={gender} onChange={setGender}>
+            <RadioGroup.Label>Plan</RadioGroup.Label>
+            <RadioGroup.Option value="startup">
+              {({ checked }) => (
+                <span className={checked ? 'bg-blue-200' : ''}>Startup</span>
+              )}
+            </RadioGroup.Option>
+            <RadioGroup.Option value="business">
+              {({ checked }) => (
+                <span className={checked ? 'bg-blue-200' : ''}>Business</span>
+              )}
+            </RadioGroup.Option>
+            <RadioGroup.Option value="enterprise">
+              {({ checked }) => (
+                <span className={checked ? 'bg-blue-200' : ''}>Enterprise</span>
+              )}
+            </RadioGroup.Option>
+          </RadioGroup>
+        </div>
+        <div className='flex gap-2 justify-center mt-2'>
+          <button className='p-2 w-20 rounded-full bg-green-600' onClick={() => setDialog(false)}>Save</button>
+          <button className='p-2 w-20 rounded-full bg-red-500' onClick={() => setDialog(false)}>Cancel</button>
+        </div>
+      </Dialog.Panel>
+    </Dialog>
   </div>
   )
 }
