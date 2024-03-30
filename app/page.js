@@ -1,4 +1,4 @@
-import Absensi from "@/components/Absensi"
+import Absensi from '@/components/Absensi'
 
 export default function Home() {
   return <Absensi />
