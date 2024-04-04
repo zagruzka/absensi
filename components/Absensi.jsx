@@ -78,7 +78,7 @@ useEffect(() => getMumi(), [date])
         <div className='flex w-full justify-between'>
           <div className='flex rounded-full bg-slate-700 overflow-hidden'>
             <button className='px-2' onClick={() => dateStep(-1)}><Image src={left} alt='left' /></button>
-            <DatePicker withPortal selected={date} onChange={date => setDate(date)}
+            <DatePicker selected={date} onChange={date => setDate(date)} popperPlacement='bottom-start'
             customInput={<button className='py-1 w-20'>{dayjs(date).format('DD MMM YY')}</button>}
             />
             <button className='px-2' onClick={() => dateStep(1)}><Image src={right} alt='right' /></button>
