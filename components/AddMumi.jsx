@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-const AddMumi = ({ onClose, onSave, className }) => {
+const AddMumi = ({ onClose, onSave }) => {
   const [nama, setNama] = useState(null)
   const [gender, setGender] = useState(null)
 
@@ -18,7 +18,7 @@ const AddMumi = ({ onClose, onSave, className }) => {
       <div className='text-center font-bold'>Tambah muda mudi</div>
       <div className='flex flex-col gap-1 mt-5'>
         <div>Nama</div>
-        <input id='nama' placeholder='Nama pendek saja' className='rounded-full px-2 text-slate-800 py-1' onChange={e => setNama(e.target.value)} autoFocus />
+        <input id='nama' placeholder='Nama Lengkap' className='rounded-full px-2 text-slate-800 py-1' onChange={e => setNama(e.target.value)} autoFocus />
         <div className='mt-2'>Jenis Kelamin</div>
         <div className='flex bg-slate-600 p-1 rounded-full'>
           <button className={'flex-1 rounded-full ' + (gender == 1 && 'bg-slate-800')} onClick={() => setGender(1)}>Pria</button>

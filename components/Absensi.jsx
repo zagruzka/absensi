@@ -27,19 +27,58 @@ const [search, setSerch] = useState('')
 const [note, setNote] = useState('')
 const [addDialog, setAddDialog] = useState(false)
 const [noteDialog, setNoteDialog] = useState(false)
+const [izinDialog, setIzinDialog] = useState(false)
 const [listMumi, setListMumi] = useState([])
 const [isLoading, setIsLoading] = useState(true)
 const [showSidebar, setShowSidebar] = useState(false)
 
+const [izin, setIzin] = useState({
+  id: null,
+  prev: null,
+  absen: null,
+  ket: null
+})
+
+const handleAbsen = (id, prev, absen) => {
+  if (absen == 2 && prev != absen) {
+      setIzinDialog(true)
+      setIzin({ id, prev, absen, ket: null })
+  } else {
+      postAbsen(id, prev, absen, '')
+  }
+}
+const handleIzin = () => {
+  if (!izin.ket) {
+    return toast.error('Izin harus ada keterangan')
+  }
+  postAbsen(izin.id, izin.prev, izin.absen, izin.ket)
+  setIzinDialog(false)
+}
+
+const postAbsen = (id, prev, absen, ket) => {
+  setIsLoading(true)
+  if (prev == absen) {
+    setListMumi(list => list.map(i => i.id == id ? {...i, absen: null} : i))
+    query(`DELETE FROM absen WHERE mumi_id = ${id} AND date = '${format(date)}'`)
+    .then(() => getMumi())
+    .catch(() => toast.error('Network error'))
+  } else {
+    setListMumi(list => list.map(i => i.id == id ? {...i, absen, ket} : i))
+    query(`INSERT OR REPLACE INTO absen (mumi_id, date, absen, ket) VALUES (${id}, '${format(date)}', ${absen}, '${ket}')`)
+    .then(() => getMumi())
+    .catch(() => toast.error('Network error'))
+  }
+}
+
 const format = date => dayjs(date).format('YYYY-MM-DD')
 
 const listMumiGender = useMemo(() => {
- return listMumi.filter(list => (tabGender ? list.gender == tabGender : true) && list.nama.toLowerCase().includes(search.toLowerCase()))
+ return listMumi.filter(list => (tabGender ? list.gender == tabGender : true) && list.fullname.toLowerCase().includes(search.toLowerCase()))
 }, [listMumi, tabGender, search])
 
 const getMumi = () => {
   setIsLoading(true)
-  query(`SELECT * FROM mumi LEFT JOIN absen ON mumi.id = absen.mumi_id AND absen.date = '${format(date)}' ORDER BY LOWER(nama) ASC`)
+  query(`SELECT * FROM mumi LEFT JOIN absen ON mumi.id = absen.mumi_id AND absen.date = '${format(date)}' ORDER BY LOWER(fullname) ASC`)
   .then(result => setListMumi(result))
   .catch(() => toast.error('Network error'))
   .finally(() => setIsLoading(false))
@@ -76,25 +115,10 @@ const handleNote = (action) => {
   .finally(() => setIsLoading(false))
 }
 
-const handleAbsen = (id, prev, absen, ket) => {
-  setIsLoading(true)
-  if (prev == absen) {
-    setListMumi(list => list.map(i => i.id == id ? {...i, absen: null} : i))
-    query(`DELETE FROM absen WHERE mumi_id = ${id} AND date = '${format(date)}'`)
-    .then(() => getMumi())
-    .catch(() => toast.error('Network error'))
-  } else {
-    setListMumi(list => list.map(i => i.id == id ? {...i, absen, ket} : i))
-    query(`INSERT OR REPLACE INTO absen (mumi_id, date, absen, ket) VALUES (${id}, '${format(date)}', ${absen}, '${ket}')`)
-    .then(() => getMumi())
-    .catch(() => toast.error('Network error'))
-  }
-}
-
-const addMumi = (nama, gender) => {
-  query(`INSERT INTO mumi (nama, gender) VALUES ('${nama}', '${gender}')`)
+const addMumi = (fullname, gender) => {
+  query(`INSERT INTO mumi (fullname, gender) VALUES ('${fullname}', '${gender}')`)
   .then(() => {
-    toast.success('Berhasil menambahkan '+nama)
+    toast.success('Berhasil menambahkan '+fullname)
     getMumi()
   })
   .catch(() => toast.error('Network error'))
@@ -110,6 +134,7 @@ const datePulseChange = () => {
 }
 
 useEffect(() => {
+  setListMumi(prev => prev.map(i => ({...i, absen: null, ket: null, mumi_id: null, date: null})))
   getMumi()
   getNote()
   datePulseChange()
@@ -153,7 +178,9 @@ useEffect(() => {
         loop={true}
         navigation={true}
         className='w-full'
-        onSlideChangeTransitionEnd={e => dateStep(e.swipeDirection == 'next' ? 1 : -1)}
+        // onSlideChangeTransitionStart={() => setListMumi(prev => prev.map(i => ({...i, absen: null, ket: null})))}
+        onSlideChangeTransitionStart={e => dateStep(e.swipeDirection == 'next' ? 1 : -1) }
+        // onSlideChangeTransitionEnd={e => dateStep(e.swipeDirection == 'next' ? 1 : -1)}
       >
         <SwiperSlide>
           <TableMumi listMumi={listMumiGender} onAbsen={handleAbsen} />
@@ -190,6 +217,19 @@ useEffect(() => {
           </div>
         </div>
       </div>
+    </Dialog>
+    <Dialog open={izinDialog}>
+        <div className='mx-5'>
+            <div className='max-w-96 p-4 bg-slate-800 rounded-xl mx-auto mt-10'>
+                <div className='font-bold text-center'>Keterangan izin</div>
+                <textarea id='ket' className='text-slate-800 bg-slate-200 w-full p-2 rounded-xl mt-2' rows={2} autoFocus
+                onChange={e => setIzin({...izin, ket: e.target.value})} />
+                <div className='flex gap-2 justify-end mt-2'>
+                    <button className='w-20 py-1 bg-yellow-600 rounded-full' onClick={() => handleIzin()}>Izin</button>
+                    <button className='w-20 py-1 bg-slate-600 rounded-full' onClick={() => setIzinDialog(false)}>Batal</button>
+                </div>
+            </div>
+        </div>
     </Dialog>
     <Toaster />
     <Sidebar show={showSidebar} onClose={() => setShowSidebar(false)} addMumi={() => setAddDialog(true)} />
