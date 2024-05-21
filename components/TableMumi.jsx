@@ -30,7 +30,7 @@ const TableMumi = ({ listMumi, onAbsen }) => {
     return (
     <>
     <div className='relative w-full'>
-        <table className='w-full text-center mt-2 border'>
+        <table className='w-full text-center border'>
             <thead className='border-b'>
                 <tr>
                     <th className='border-x w-6' rowSpan={2}>No</th>
@@ -74,13 +74,13 @@ const TableMumi = ({ listMumi, onAbsen }) => {
     </div>
     <Dialog open={dialog}>
         <div className='mx-5'>
-            <div className='w-full max-w-96 p-4 bg-slate-800 rounded-xl mx-auto mt-10'>
-                <div className='font-bold'>Keterangan izin</div>
-                <textarea id='ket' className='text-slate-700 bg-slate-200 w-full p-2 rounded-xl mt-2' rows={2} autoFocus
+            <div className='max-w-96 p-4 bg-slate-800 rounded-xl mx-auto mt-10'>
+                <div className='font-bold text-center'>Keterangan izin</div>
+                <textarea id='ket' className='text-slate-800 bg-slate-200 w-full p-2 rounded-xl mt-2' rows={2} autoFocus
                 onChange={e => setIzin({...izin, ket: e.target.value})} />
                 <div className='flex gap-2 justify-end mt-2'>
                     <button className='w-20 py-1 bg-yellow-600 rounded-full' onClick={() => handleIzin()}>Izin</button>
-                    <button className='w-20 py-1 bg-slate-600 rounded-full' onClick={() => setDialog(false)}>Cancel</button>
+                    <button className='w-20 py-1 bg-slate-600 rounded-full' onClick={() => setDialog(false)}>Batal</button>
                 </div>
             </div>
         </div>
