@@ -34,7 +34,7 @@ const Manage = () => {
         setIsLoading(true)
         query(`SELECT id, fullname, gender, active FROM mumi ORDER BY LOWER(fullname) ASC`)
         .then(result => setListMumi(result))
-        .catch(() => toast.error('Network error'))
+        .catch(() => toast.error(<button onClick={() => toast.dismiss()}>Network error</button>))
         .finally(() => setIsLoading(false))
       }
 
@@ -46,7 +46,7 @@ const Manage = () => {
     const saveUser = (save) => {
         query(`INSERT OR REPLACE INTO mumi (id, fullname, gender, active) VALUES (${save.id} ,'${save.fullname}', '${save.gender}', ${save.active})`)
         .then(() => {
-            toast.success('berhasil' + (save.id ? ' merubah ' : ' menambahkan ') + save.fullname)
+            toast.success(<button onClick={() => toast.dismiss()}>berhasil {save.id ? ' merubah ' : ' menambahkan '+ save.fullname}</button>)
             getMumi()
         })
         .catch(err => console.log(err))

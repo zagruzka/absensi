@@ -1,24 +1,12 @@
 import { useEffect, useState } from 'react'
-import DatePicker from 'react-datepicker'
-import right from '@/assets/right.svg'
-import left from '@/assets/left.svg'
 import menu from '@/assets/menu.svg'
 import progress from '@/assets/progress.svg'
-import dayjs from 'dayjs'
 import Image from 'next/image'
 import Sidebar from './Sidebar'
 import { Toaster } from 'react-hot-toast'
 
-const Navbar = ({ loading, tabGender, onGender, date, onDate, search, onSearch }) => {
-  const [pulse, setPulse] = useState(false)
+const Navbar = ({ loading, tabGender, onGender, search, onSearch }) => {
   const [showSidebar, setShowSidebar] = useState(false)
-
-  const dateStep = (step) => onDate(prev => new Date(prev.setDate(prev.getDate() + step)))
-
-  useEffect(() => {
-    setPulse(true)
-    setTimeout(() => setPulse(false), 100)
-  }, [date])
 
   return (
   <>
@@ -32,13 +20,6 @@ const Navbar = ({ loading, tabGender, onGender, date, onDate, search, onSearch }
       </div>
       <div className='w-6'>{loading && <Image src={progress} alt='progress' className='animate-spin' />}</div>
     </div>
-    {/* <div className={'flex rounded-full bg-slate-700 overflow-hidden mx-auto transition-transform '+ (pulse ? 'scale-110' : '')}>
-      <button className='px-2' onClick={() => dateStep(-1)}><Image src={left} alt='left' /></button>
-      <DatePicker selected={date} onChange={date => onDate(date)}
-      customInput={<button className='py-1 w-24'>{dayjs(date).format('DD MMM YY')}</button>}
-      />
-      <button className='px-2' onClick={() => dateStep(1)}><Image src={right} alt='right' /></button>
-    </div> */}
     <input id='search' placeholder='cari nama...'
       type='search'
       value={search}

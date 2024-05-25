@@ -47,7 +47,7 @@ const Absensi = () => {
   }
   const handleIzin = () => {
     if (!izin.ket) {
-      return toast.error('Izin harus ada keterangan')
+      return toast.error(<button onClick={() => toast.dismiss()}>Izin harus ada keterangan</button>)
     }
     postAbsen(izin.id, izin.prev, izin.absen, izin.ket)
     setIzinDialog(false)
@@ -59,12 +59,12 @@ const Absensi = () => {
       setListMumi(list => list.map(i => i.id == id ? {...i, absen: null} : i))
       query(`DELETE FROM absen WHERE mumi_id = ${id} AND date = '${format(date)}'`)
       .then(() => getMumi())
-      .catch(() => toast.error('Network error'))
+      .catch(() => toast.error(<button onClick={() => toast.dismiss()}>Network error</button>))
     } else {
       setListMumi(list => list.map(i => i.id == id ? {...i, absen, ket} : i))
       query(`INSERT OR REPLACE INTO absen (mumi_id, date, absen, ket) VALUES (${id}, '${format(date)}', ${absen}, '${ket}')`)
       .then(() => getMumi())
-      .catch(() => toast.error('Network error'))
+      .catch(() => toast.error(<button onClick={() => toast.dismiss()}>Network error</button>))
     }
   }
 
@@ -78,7 +78,7 @@ const Absensi = () => {
     WHERE mumi.active = 1
     ORDER BY LOWER(fullname) ASC`)
     .then(result => setListMumi(result))
-    .catch(() => toast.error('Network error'))
+    .catch(() => toast.error(<button onClick={() => toast.dismiss()}>Network error</button>))
     .finally(() => setIsLoading(false))
   }
 
@@ -88,12 +88,12 @@ const Absensi = () => {
     .then(result => {
       if (result.length) {
         setNote(result[0].note)
-        toast((t) => (<button className='flex gap-2' onClick={() => toast.dismiss(t.id)}><Image src={listDark} alt='listDark' /> {result[0].note}</button>))
+        toast(<button className='flex gap-2' onClick={() => toast.dismiss()}><Image src={listDark} alt='listDark' /> {result[0].note}</button>)
       } else {
         setNote('')
       }
     })
-    .catch(() => toast.error('Network error'))
+    .catch(() => toast.error(<button onClick={() => toast.dismiss()}>Network error</button>))
   }
 
   const handleNote = (action) => {
@@ -107,9 +107,9 @@ const Absensi = () => {
     .then(() => {
       setNoteDialog(false)
       getNote()
-      toast.success(action == 'save' ? 'Berhasil menambahkan note' : 'Berhasil menghapus note')
+      toast.success(<button onClick={() => toast.dismiss()}>{action == 'save' ? 'Berhasil menambahkan note' : 'Berhasil menghapus note'}</button>)
     })
-    .catch(() => toast.error('Network error'))
+    .catch(() => toast.error(<button onClick={() => toast.dismiss()}>Network error</button>))
     .finally(() => setIsLoading(false))
   }
 
@@ -126,7 +126,7 @@ const Absensi = () => {
   <div className='flex flex-col items-center max-w-[30rem] mx-auto px-2 pb-2'>
     <Navbar tabGender={tabGender} loading={isLoading} onGender={gender => setTabGender(gender)} search={search} onSearch={value => setSerch(value)} />
     <div className='flex w-full justify-between py-1'>
-      <Calendar selected={date} onChange={date => setDate(date)} />
+      <Calendar selected={date} onChange={date => setDate(date)} loading={bol => setIsLoading(bol)} />
       <button className='flex justify-center items-center w-32 h-9 bg-slate-700 px-2 gap-1 rounded-full' onClick={() => setNoteDialog(true)}>
         <Image src={list} alt='list' /> Day Note
       </button>

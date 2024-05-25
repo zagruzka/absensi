@@ -25,7 +25,7 @@ const Sidebar = ({ show, onClose }) => {
             </Link>
         ))
         }
-            <button className='flex gap-2 p-3' onClick={() => toast('fitur segera hadir, traktir developernya kopi biar semangat ngerjainnya :D')}>
+            <button className='flex gap-2 p-3' onClick={() => toast(<button onClick={() => toast.dismiss()}>fitur segera hadir, traktir developernya kopi biar semangat ngerjainnya :D</button>)}>
                 <Image src={chart} alt='chart' /> Grafik kehadiran
             </button>
         </div>

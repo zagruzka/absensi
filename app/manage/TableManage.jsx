@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import edit from '@/assets/edit.svg'
-import { useState } from 'react'
 
 const TableManage = ({ listMumi, onEdit }) => {
 
