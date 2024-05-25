@@ -1,5 +1,5 @@
-import Absensi from '@/components/Absensi'
+import { redirect } from 'next/navigation'
 
 export default function Home() {
-  return <Absensi />
+  redirect('/absensi')
 }
