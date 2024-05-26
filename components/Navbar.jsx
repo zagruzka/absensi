@@ -24,6 +24,7 @@ const Navbar = ({ loading, tabGender, onGender, search, onSearch }) => {
       type='search'
       value={search}
       className='bg-slate-200 text-slate-800 px-3 w-48 mx-auto rounded-full py-1'
+      spellCheck={false}
       onChange={e => onSearch(e.target.value)}
     />
   </div>

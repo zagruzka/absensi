@@ -1,4 +1,4 @@
-import calendar from '@/assets/calendar2.svg'
+import calendar from '@/assets/calendar.svg'
 import query from '@/db/query'
 import dayjs from 'dayjs'
 import Image from 'next/image'

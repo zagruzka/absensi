@@ -17,7 +17,7 @@ const saveMumi = ({ onClose, onSave, user }) => {
     <div className='text-center font-bold'>Tambah muda mudi</div>
     <div className='flex flex-col gap-1 mt-5'>
       <div>Nama</div>
-      <input id='nama' placeholder='Nama Lengkap' className='rounded-full px-2 text-slate-800 py-1' onChange={e => setSave(prev => ({...prev, fullname: e.target.value}))} value={save.fullname} autoFocus />
+      <input id='nama' placeholder='Nama Lengkap' spellCheck={false} className='rounded-full px-2 text-slate-800 py-1' onChange={e => setSave(prev => ({...prev, fullname: e.target.value}))} value={save.fullname} autoFocus />
       <div className='mt-2'>Jenis Kelamin</div>
       <div className='flex bg-slate-600 p-1 rounded-full'>
         <button className={'flex-1 rounded-full ' + (save.gender == 1 && 'bg-slate-800')} onClick={() => setSave(prev => ({...prev, gender: 1}))}>Pria</button>

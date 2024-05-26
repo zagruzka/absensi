@@ -46,7 +46,7 @@ const Manage = () => {
     const saveUser = (save) => {
         query(`INSERT OR REPLACE INTO mumi (id, fullname, gender, active) VALUES (${save.id} ,'${save.fullname}', '${save.gender}', ${save.active})`)
         .then(() => {
-            toast.success(<button onClick={() => toast.dismiss()}>berhasil {save.id ? ' merubah ' : ' menambahkan '+ save.fullname}</button>)
+            toast.success(<button onClick={() => toast.dismiss()}>berhasil {(save.id ? ' merubah ' : ' menambahkan ')+ save.fullname}</button>)
             getMumi()
         })
         .catch(err => console.log(err))
@@ -56,7 +56,7 @@ const Manage = () => {
 
     return (
     <>
-    <div className='max-w-[30rem] mx-auto pb-2'>
+    <div className='max-w-[30rem] mx-auto px-2 pb-2'>
     <Navbar tabGender={tabGender} loading={isLoading} onGender={gender => setTabGender(gender)} search={search} onSearch={value => setSerch(value)} />
         <button className='flex justify-center items-center gap-2 h-9 w-32 bg-slate-700 rounded-full my-1'onClick={() => setAddDialog(true)}>
             <Image src={add} alt='add' />Tambah

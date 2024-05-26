@@ -34,7 +34,7 @@ const TableAbsensi = ({ listMumi, onAbsen }) => {
         <td className='py-2'>
             {
             list.ket?.length > 7 ?
-                <a className='text-blue-600' onClick={() => toast(list.ket)}>{list.ket.substring(0, 7)}</a> : list.ket}</td>
+                <a className='text-blue-600' onClick={() => toast(<button onClick={() => toast.dismiss()}>{list.ket}</button>)}>{list.ket.substring(0, 7)}</a> : list.ket}</td>
         </tr>
         )
         :

@@ -83,7 +83,7 @@ const Absensi = () => {
   }
 
   const getNote = () => {
-    toast.dismiss()
+    toast.remove()
     query(`SELECT note FROM note WHERE date = '${format(date)}'`)
     .then(result => {
       if (result.length) {
@@ -158,6 +158,7 @@ const Absensi = () => {
           className='text-slate-800 bg-slate-200 w-full p-2 rounded-xl mt-2'
           autoFocus
           value={note}
+          spellCheck={false}
           onChange={e => setNote(e.target.value)}
         />
         <div className='flex w-full justify-between'>
