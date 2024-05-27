@@ -1,11 +1,12 @@
 'use client'
 
-import {useEffect, useMemo, useState } from 'react'
+import {useEffect, useMemo, useRef, useState } from 'react'
 import query from '@/db/query'
 import TableMumi from './TableAbsensi'
 import dayjs from 'dayjs'
 import Image from 'next/image'
 import list from '@/assets/list.svg'
+import download from '@/assets/download.svg'
 import listDark from '@/assets/listDark.svg'
 import Dialog from '../../components/Dialog'
 import toast from 'react-hot-toast'
@@ -15,6 +16,7 @@ import Navbar from '@/components/Navbar'
 import Calendar from './Calendar'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'swiper/css'
+import Screenshoot from './Screenshoot'
 
 const Absensi = () => {
   const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)))
@@ -25,6 +27,8 @@ const Absensi = () => {
   const [izinDialog, setIzinDialog] = useState(false)
   const [listMumi, setListMumi] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+
+  const captureRef = useRef()
 
   const [izin, setIzin] = useState({
     id: null,
@@ -127,9 +131,12 @@ const Absensi = () => {
     <Navbar tabGender={tabGender} loading={isLoading} onGender={gender => setTabGender(gender)} search={search} onSearch={value => setSerch(value)} />
     <div className='flex w-full justify-between py-1'>
       <Calendar selected={date} onChange={date => setDate(date)} loading={bol => setIsLoading(bol)} />
-      <button className='flex justify-center items-center w-32 h-9 bg-slate-700 px-2 gap-1 rounded-full' onClick={() => setNoteDialog(true)}>
-        <Image src={list} alt='list' /> Day Note
-      </button>
+      <div className='flex gap-1'>
+        <button className='flex justify-center items-center w-32 h-9 bg-slate-700 px-2 gap-1 rounded-full' onClick={() => setNoteDialog(true)}>
+          <Image src={list} alt='list' /> Day Note
+        </button>
+        <button className='w-9 h-9 bg-slate-700 px-2 gap-1 rounded-full' onClick={() => captureRef.current.capture()}><Image src={download} alt='download' /></button>
+      </div>
     </div>
     <Swiper
       slidesPerView={1}
@@ -184,6 +191,7 @@ const Absensi = () => {
       </div>
     </div>
   </Dialog>
+  <Screenshoot listMumi={listMumi} date={dayjs(date).format('DD MMM YYYY')} note={note} ref={captureRef} />
   </>
   )
 }
