@@ -20,15 +20,15 @@ const TableAbsensi = ({ listMumi, onAbsen }) => {
         {
         listMumi.length ?
         listMumi.map((list, index) => 
-        <tr key={list.id} className={'bg-slate-900 ' + (index % 2 == 0 && 'bg-opacity-50')}>
+        <tr key={list.id} className={'bg-slate-900 ' + (index % 2 == 0 ? 'bg-opacity-50' : '')}>
             <td className='py-2 border-x'>{index + 1}</td>
             <td className='py-2 border-x'>{list.fullname}</td>
             <td className='py-2 border-x'>
-                <button className={'border w-4 h-4 rounded '+ (list.absen == 1 && 'bg-green-600')}
+                <button className={'border w-4 h-4 rounded '+ (list.absen == 1 ? 'bg-green-600' : '')}
                 onClick={() => onAbsen(list.id, list.absen, 1)}></button>
             </td>
             <td className='py-2 border-x'>
-                <button className={'border w-4 h-4 rounded '+ (list.absen == 2 && 'bg-yellow-600')}
+                <button className={'border w-4 h-4 rounded '+ (list.absen == 2 ? 'bg-yellow-600' : '')}
                 onClick={() => onAbsen(list.id, list.absen, 2)}></button>
             </td>
         <td className='py-2'>

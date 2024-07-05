@@ -17,6 +17,7 @@ import Calendar from './Calendar'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'swiper/css'
 import Screenshoot from './Screenshoot'
+// import { useRouter, useSearchParams } from 'next/navigation'
 
 const Absensi = () => {
   const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)))
@@ -27,6 +28,16 @@ const Absensi = () => {
   const [izinDialog, setIzinDialog] = useState(false)
   const [listMumi, setListMumi] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  
+  // const router = useRouter()
+  // const params = useSearchParams()
+
+  // const handleParams = () => {
+  //   const newParams = new URLSearchParams(params)
+  //   newParams.set('tgl', '123123')
+  //   router.push(`?${newParams.toString()}`)
+  //   console.log(newParams)
+  // }
 
   const captureRef = useRef()
 
