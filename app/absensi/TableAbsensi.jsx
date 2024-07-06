@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import toast from 'react-hot-toast'
 
 const TableAbsensi = ({ listMumi, onAbsen }) => {
@@ -31,10 +32,14 @@ const TableAbsensi = ({ listMumi, onAbsen }) => {
                 <button className={'border w-4 h-4 rounded '+ (list.absen == 2 ? 'bg-yellow-600' : '')}
                 onClick={() => onAbsen(list.id, list.absen, 2)}></button>
             </td>
-        <td className='py-2'>
-            {
-            list.ket?.length > 7 ?
-                <a className='text-blue-600' onClick={() => toast(<button onClick={() => toast.dismiss()}>{list.ket}</button>)}>{list.ket.substring(0, 7)}</a> : list.ket}</td>
+            <td className='py-2 w-16 whitespace-nowrap text-ellipsis block overflow-hidden' onClick={() => toast(<button onClick={() => toast.dismiss()}>{list.ket}</button>)}>
+                {list.ket}
+                {/* {
+                list.ket?.length > 7 ?
+                    <a className='text-blue-600' onClick={() => toast(<button onClick={() => toast.dismiss()}>{list.ket}</button>)}>{list.ket.substring(0, 7)}</a>
+                : list.ket
+                } */}
+            </td>
         </tr>
         )
         :
@@ -44,6 +49,7 @@ const TableAbsensi = ({ listMumi, onAbsen }) => {
         }
         </tbody>
     </table>
+    <div className={'text-center py-1 ' +(listMumi.length ? '' : 'hidden')}>Tidak menemukan nama? Daftar atau aktifkan <Link href='/manage' className='border-b'>disini</Link></div>
     </>
     )
 }

@@ -14,13 +14,17 @@ import TextareaAutosize from 'react-textarea-autosize'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import Navbar from '@/components/Navbar'
 import Calendar from './Calendar'
+import Screenshoot from './Screenshoot'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'swiper/css'
-import Screenshoot from './Screenshoot'
-// import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const Absensi = () => {
-  const [date, setDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)))
+  const params = useSearchParams()
+  const router = useRouter()
+  const tgl = dayjs(params.get('tgl'))
+
+  const [date, setDate] = useState(tgl.isValid() ? dayjs(tgl).toDate() : new Date(new Date().setHours(0, 0, 0, 0)))
   const [tabGender, setTabGender] = useState(null)
   const [search, setSerch] = useState('')
   const [note, setNote] = useState('')
@@ -28,18 +32,8 @@ const Absensi = () => {
   const [izinDialog, setIzinDialog] = useState(false)
   const [listMumi, setListMumi] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  
-  // const router = useRouter()
-  // const params = useSearchParams()
 
-  // const handleParams = () => {
-  //   const newParams = new URLSearchParams(params)
-  //   newParams.set('tgl', '123123')
-  //   router.push(`?${newParams.toString()}`)
-  //   console.log(newParams)
-  // }
-
-  const captureRef = useRef()
+  const captureRef = useRef(null)
 
   const [izin, setIzin] = useState({
     id: null,
@@ -131,6 +125,9 @@ const Absensi = () => {
   const dateStep = (step) => setDate(prev => new Date(prev.setDate(prev.getDate() + step)))
 
   useEffect(() => {
+    const newParams = new URLSearchParams(params)
+    newParams.set('tgl', dayjs(date).format('YYYY-MM-DD'))
+    router.push(`?${newParams.toString()}`)
     setListMumi(prev => prev.map(i => ({...i, absen: null, ket: null, mumi_id: null, date: null})))
     getMumi()
     getNote()
