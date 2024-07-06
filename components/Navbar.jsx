@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import menu from '@/assets/menu.svg'
 import progress from '@/assets/progress.svg'
 import Image from 'next/image'
@@ -7,7 +7,6 @@ import { Toaster } from 'react-hot-toast'
 
 const Navbar = ({ loading, tabGender, onGender, search, onSearch }) => {
   const [showSidebar, setShowSidebar] = useState(false)
-
   return (
   <>
   <div className='flex flex-col gap-2 pt-3 pb-2 w-full z-20 bg-slate-800 sticky top-0 shadow-lg'>

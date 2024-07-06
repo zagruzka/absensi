@@ -6,6 +6,7 @@ import close from '@/assets/close.svg'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect } from 'react'
 
 const Sidebar = ({ show, onClose }) => {
     const pathname = usePathname()
@@ -13,6 +14,17 @@ const Sidebar = ({ show, onClose }) => {
         { title: 'Absensi', path: '/absensi', icon: checklist },
         { title: 'Manage List Muda Mudi', path: '/manage', icon: group }
     ]
+
+    useEffect(() => {
+        if (show) {
+            document.body.classList.add('overflow-hidden')
+        } else {
+            document.body.classList.remove('overflow-hidden')
+        }
+        return(() => {
+            document.body.classList.remove('overflow-hidden')
+        })
+    }, [show])
     return (
     <>
     <div className={'p-4 flex flex-col justify-between fixed inset-0 w-72 z-50 bg-slate-700 transition-transform '+ (show ? 'translate-x-0' : '-translate-x-full')}>

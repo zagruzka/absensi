@@ -46,25 +46,26 @@ const Absensi = () => {
     return listMumi.filter(list => (tabGender ? list.gender == tabGender : true) && list.fullname.toLowerCase().includes(search.toLowerCase()))
     }, [listMumi, tabGender, search])
 
-  const handleAbsen = (id, prev, absen) => {
-    if (absen == 2 && prev != absen) {
-        setIzinDialog(true)
-        setIzin({ id, prev, absen, ket: null })
+  const handleAbsen = (id, prev, absen, ket) => {
+    //jika ingin izin
+    if (absen == 2) {
+      setIzinDialog(true)
+      setIzin({ id, prev, absen, ket: ket ?? '' })
     } else {
-        postAbsen(id, prev, absen, '')
+      postAbsen(id, prev, absen, '')
     }
   }
-  const handleIzin = () => {
-    if (!izin.ket) {
+  const handleIzin = (id, prev, absen, ket) => {
+    if (absen && !izin.ket) {
       return toast.error(<button onClick={() => toast.dismiss()}>Izin harus ada keterangan</button>)
     }
-    postAbsen(izin.id, izin.prev, izin.absen, izin.ket)
+    postAbsen(id, prev, absen, ket)
     setIzinDialog(false)
   }
 
   const postAbsen = (id, prev, absen, ket) => {
     setIsLoading(true)
-    if (prev == absen) {
+    if ((prev == absen && absen != 2) || (!ket && absen != 1)) {
       setListMumi(list => list.map(i => i.id == id ? {...i, absen: null} : i))
       query(`DELETE FROM absen WHERE mumi_id = ${id} AND date = '${format(date)}'`)
       .then(() => getMumi())
@@ -191,9 +192,12 @@ const Absensi = () => {
       <div className='max-w-96 p-4 bg-slate-800 rounded-xl mx-auto mt-10'>
         <div className='font-bold text-center'>Keterangan izin</div>
         <textarea id='ket' className='text-slate-800 bg-slate-200 w-full p-2 rounded-xl mt-2' rows={2} autoFocus
-        onChange={e => setIzin({...izin, ket: e.target.value})} />
-        <div className='flex gap-2 justify-end mt-2'>
-          <button className='w-20 py-1 bg-yellow-600 rounded-full' onClick={() => handleIzin()}>Izin</button>
+        value={izin.ket} onChange={e => setIzin({...izin, ket: e.target.value})} />
+        <div className='flex gap-2 justify-between mt-2'>
+          <div className='flex gap-2'>
+            <button className='w-20 py-1 bg-yellow-600 rounded-full' onClick={() => handleIzin(izin.id, izin.prev, izin.absen, izin.ket)}>Izin</button>
+            <button className='w-20 py-1 bg-red-500 rounded-full' onClick={() => handleIzin(izin.id)}>Hapus</button>
+          </div>
           <button className='w-20 py-1 bg-slate-600 rounded-full' onClick={() => setIzinDialog(false)}>Batal</button>
         </div>
       </div>

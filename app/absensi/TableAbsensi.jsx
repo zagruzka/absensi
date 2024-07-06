@@ -25,12 +25,13 @@ const TableAbsensi = ({ listMumi, onAbsen }) => {
             <td className='py-2 border-x'>{index + 1}</td>
             <td className='py-2 border-x'>{list.fullname}</td>
             <td className='py-2 border-x'>
+                {/* absen 1 untuk hadir, 2 untuk izin */}
                 <button className={'border w-4 h-4 rounded '+ (list.absen == 1 ? 'bg-green-600' : '')}
                 onClick={() => onAbsen(list.id, list.absen, 1)}></button>
             </td>
             <td className='py-2 border-x'>
                 <button className={'border w-4 h-4 rounded '+ (list.absen == 2 ? 'bg-yellow-600' : '')}
-                onClick={() => onAbsen(list.id, list.absen, 2)}></button>
+                onClick={() => onAbsen(list.id, list.absen, 2, list.ket)}></button>
             </td>
             <td className='py-2 w-16 whitespace-nowrap text-ellipsis block overflow-hidden' onClick={() => toast(<button onClick={() => toast.dismiss()}>{list.ket}</button>)}>
                 {list.ket}
